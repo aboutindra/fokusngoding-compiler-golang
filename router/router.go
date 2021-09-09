@@ -20,9 +20,6 @@ func (r Router) Exec(c *fiber.Ctx) error {
 
 	var Src data.Codes
 	json.Unmarshal([]byte(c.Body()), &Src)
-
-	fmt.Print("\nIni isi body : ", c.Body(), "\n Ini isi struct nya : ", Src.Code)
-
 	createFile()
 	writeFile(Src.Code)
 	path := string(out)
@@ -36,23 +33,10 @@ func (r Router) Exec(c *fiber.Ctx) error {
 	}
 
 	response, _ := json.Marshal(string(stdout))
-	fmt.Print("\nIni out : ", string(response))
-	fmt.Println("\nMaxRSS:", cmd1.ProcessState.SysUsage().(*syscall.Rusage).Maxrss)
 	deleteFile()
-	PrintMemUsage()
 	return c.Send(response)
 
 
-}
-
-func PrintMemUsage() {
-	var m runtime.MemStats
-	runtime.ReadMemStats(&m)
-	// For info on each, see: https://golang.org/pkg/runtime/#MemStats
-	fmt.Printf("Alloc = %v MiB", bToMb(m.Alloc))
-	fmt.Printf("\tTotalAlloc = %v MiB", bToMb(m.TotalAlloc))
-	fmt.Printf("\tSys = %v MiB", bToMb(m.Sys))
-	fmt.Printf("\tNumGC = %v\n", m.NumGC)
 }
 
 func createFile() {
@@ -109,10 +93,6 @@ func deleteFile() {
 	}
 
 	fmt.Println("File Deleted")
-}
-
-func bToMb(b uint64) uint64 {
-	return b / 1024 / 1024
 }
 
 func isError(err error) bool {

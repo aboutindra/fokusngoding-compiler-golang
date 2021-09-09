@@ -2,10 +2,8 @@ package main
 
 import (
 	"fc-golang/router"
-	"fmt"
-	"github.com/gofiber/cors"
-	"github.com/gofiber/fiber"
-	"runtime"
+	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/cors"
 )
 
 var r router.Router
@@ -15,25 +13,11 @@ func init() {
 }
 
 func main() {
-	PrintMemUsage()
 	app := fiber.New()
 	app.Use(cors.New())
 
-	app.Post("/api/v1/compiler/golang/run", r.Exec)
+	app.Post("/golang/v1/compiler/run", r.Exec)
+	app.Post("/golang/v1/compiler/unit-test", r.Exec)
 
-	app.Listen(4000)
-}
-
-func PrintMemUsage() {
-	var m runtime.MemStats
-	runtime.ReadMemStats(&m)
-	// For info on each, see: https://golang.org/pkg/runtime/#MemStats
-	fmt.Printf("Alloc = %v MiB", bToMb(m.Alloc))
-	fmt.Printf("\tTotalAlloc = %v MiB", bToMb(m.TotalAlloc))
-	fmt.Printf("\tSys = %v MiB", bToMb(m.Sys))
-	fmt.Printf("\tNumGC = %v\n", m.NumGC)
-}
-
-func bToMb(b uint64) uint64 {
-	return b / 1024 / 1024
+	app.Listen(":4000")
 }

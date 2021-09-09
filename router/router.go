@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"fc-golang/data"
 	"fmt"
-	"github.com/gofiber/fiber"
+	"github.com/gofiber/fiber/v2"
 	"os"
 	"os/exec"
 	"runtime"
@@ -16,7 +16,7 @@ type Router struct {
 
 var out, _ = exec.Command("uuidgen").Output()
 
-func (r Router) Exec(c *fiber.Ctx) {
+func (r Router) Exec(c *fiber.Ctx) error {
 
 	var Src data.Codes
 	json.Unmarshal([]byte(c.Body()), &Src)
@@ -32,15 +32,16 @@ func (r Router) Exec(c *fiber.Ctx) {
 	stdout, err := cmd1.CombinedOutput()
 
 	if err != nil {
-		c.Status(200).Send(err)
+		c.Status(500).SendString(err.Error())
 	}
 
 	response, _ := json.Marshal(string(stdout))
 	fmt.Print("\nIni out : ", string(response))
 	fmt.Println("\nMaxRSS:", cmd1.ProcessState.SysUsage().(*syscall.Rusage).Maxrss)
-	c.Send(response)
 	deleteFile()
 	PrintMemUsage()
+	return c.Send(response)
+
 
 }
 

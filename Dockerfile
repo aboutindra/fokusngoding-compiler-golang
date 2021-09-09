@@ -12,6 +12,8 @@ COPY . .
 RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix .
 
 FROM alpine:latest
+RUN apk add --no-cache util-linux
+ENTRYPOINT export UUID=`uuidgen` && echo $UUIDFROM alpine:latest
 WORKDIR /app/
 COPY --from=builder /go/src/github.com/aboutindra/fokusngoding-compiler-golang /app/fokusngoding-compiler-golang
 WORKDIR "/app/fokusngoding-compiler-golang"

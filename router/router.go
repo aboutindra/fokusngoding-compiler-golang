@@ -19,6 +19,7 @@ func (r Router) Exec(c *fiber.Ctx) error {
 	var Src data.Codes
 	json.Unmarshal([]byte(c.Body()), &Src)
 	createFile()
+	fmt.Println("Ini code : ", Src.Code);
 	writeFile(Src.Code)
 	path := string(out)
 	path += ".go"
@@ -31,6 +32,11 @@ func (r Router) Exec(c *fiber.Ctx) error {
 	}
 
 	response, _ := json.Marshal(string(stdout))
+
+	if response == nil {
+		c.Status(204).SendString("No Content");
+	}
+
 	deleteFile()
 	return c.Send(response)
 
@@ -39,6 +45,7 @@ func (r Router) Exec(c *fiber.Ctx) error {
 func createFile() {
 	// check if file exists
 	path := string(out)
+	fmt.Println("uuid : ", path);
 	path += ".go"
 	fmt.Print("Ini file nya : ", path)
 	var _, err = os.Stat(path)

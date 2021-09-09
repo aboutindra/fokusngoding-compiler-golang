@@ -15,5 +15,5 @@ FROM alpine:latest
 WORKDIR /app/
 COPY --from=builder /go/src/github.com/aboutindra/fokusngoding-compiler-golang /app/fokusngoding-compiler-golang
 WORKDIR "/app/fokusngoding-compiler-golang"
-EXPOSE 6554
+EXPOSE 4000
 ENTRYPOINT ./fc-golang

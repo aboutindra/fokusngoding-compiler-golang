@@ -26,7 +26,7 @@ func (r Router) Exec(c *fiber.Ctx) error {
 	cmd1 := exec.Command("go", "run", path, string(out))
 	cmd1.Stdin = os.Stdin
 	stdout, err := cmd1.CombinedOutput()
-
+	fmt.Println("Ini result : ", stdout);
 	if err != nil {
 		c.Status(500).SendString(err.Error())
 	}

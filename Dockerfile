@@ -12,6 +12,8 @@ COPY . .
 RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix .
 
 FROM alpine:latest
+COPY --from=golang:1.13-alpine /usr/local/go/ /usr/local/go/
+ENV PATH="/usr/local/go/bin:${PATH}"
 RUN apk add --no-cache util-linux
 ENTRYPOINT export UUID=`uuidgen` && echo $UUIDFROM alpine:latest
 WORKDIR /app/

@@ -19,5 +19,5 @@ func main() {
 	app.Post("/golang/v1/compiler/run", r.Exec)
 	app.Post("/golang/v1/compiler/unit-test", r.Exec)
 
-	app.Listen(":4000")
+	app.Listen("0.0.0.0:4000")
 }

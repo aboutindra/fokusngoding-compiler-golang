@@ -7,8 +7,6 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"os"
 	"os/exec"
-	"runtime"
-	"syscall"
 )
 
 type Router struct {
@@ -35,7 +33,6 @@ func (r Router) Exec(c *fiber.Ctx) error {
 	response, _ := json.Marshal(string(stdout))
 	deleteFile()
 	return c.Send(response)
-
 
 }
 
